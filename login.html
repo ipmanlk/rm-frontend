@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Two Elephant Fireworks: Login</title>
+	<link rel="stylesheet" href="./lib/fontawesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="./lib/fontawesome/typicons/typicons.min.css">
+	<link rel="stylesheet" href="./lib/animate/animate.css">
+	<link rel="stylesheet" href="./lib/login/css/login.css">
+	<style>
+		body,
+		div {
+			z-index: -1;
+		}
+
+		.modal-placeholder {
+			z-index: 1;
+			display: flex;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.model {
+			width: 80vw;
+			height: 80vh;
+			background-color: aqua;
+		}
+
+		iframe {
+			width: 80vw;
+			height: 80vh;
+		}
+
+		.button {
+			display: flex;
+			margin-top: 10px;
+			justify-content: center;
+		}
+
+		.button button {
+			width: 200px;
+			height: 40px;
+			background-color: orange;
+			border: none;
+			border-radius: 10px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<body id="particles-js"></body>
+	<div class="animated bounceInDown">
+		<div class="container">
+			<span class="error animated tada" id="msg"></span>
+			<form name="form1" class="box" onsubmit="return false">
+				<h4>Two Elephant Fireworks <span>Dashboard</span></h4>
+				<h5>Sign in to your account.</h5>
+				<input type="text" id="username" name="username" placeholder="Username" autocomplete="off">
+				<i class="typcn typcn-eye" id="eye"></i>
+				<input type="password" id="password" name="password" placeholder="Passsword" id="pwd" autocomplete="off">
+				<!-- <label>
+					<input type="checkbox">
+					<span></span>
+					<small class="rmb">Remember me</small>
+				</label> -->
+				<a href="#" class="forgetpass">Forget Password?</a>
+				<input type="submit" value="Sign in" class="btn1">
+			</form>
+		</div>
+	</div>
+
+	<div class="modal-placeholder">
+		<div class="modal">
+			<iframe src="password_reset.html" frameborder="0"></iframe>
+			<div class="button">
+				<button>Close</button>
+			</div>
+		</div>
+	</div>
+	<script src="./lib/particles/particles.min.js"></script>
+	<script src="./lib/jquery/jquery.min.js"></script>
+	<script src="./lib/login/js/login.js"></script>
+
+	<script>
+		$(document).ready(() => {
+			$(".modal-placeholder").hide();
+
+			$("form").on("submit", (e) => {
+				e.preventDefault();
+				logIn();
+			});
+		})
+
+		const logIn = () => {
+			if (!checkStuff()) return;
+
+			// create http request
+			const request = $.ajax({
+				url: "/api/login",
+				contentType: "application/json; charset=utf-8",
+				method: "POST",
+				dataType: "json",
+				data: JSON.stringify({
+					data: {
+						username: $("#username").val(),
+						password: $("#password").val()
+					}
+				})
+			});
+
+			// when request is completed
+			request.done(function (res) {
+				if (res.status) {
+					window.location = "./index.html";
+				} else {
+					msg.style.display = "block";
+					msg.innerHTML = res.msg;
+				}
+			});
+
+			// when server is unreachable or request failed
+			request.fail(function () {
+				msg.style.display = "block";
+				msg.innerHTML = "Unable to contact the server!.";
+			});
+		}
+
+		// code for handling password reset iframe
+		// close button
+		$(".button button").click(() => {
+			$(".modal-placeholder").fadeOut();
+		});
+
+		//open link
+		$(".forgetpass").click(() => {
+			$(".modal-placeholder").fadeIn();
+		})
+	</script>
+
+</body>
+
+</html>
+
+
+</html>
