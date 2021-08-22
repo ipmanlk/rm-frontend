@@ -154,6 +154,7 @@ const reloadModule = () => {
 const showNewEntryModal = () => {
 	mainForm.reset();
 	$("#modalMainFormTitle").text("Add New User");
+	$("#addedDate").val(new Date().today());
 	$("#modalMainForm").modal("show");
 };
 
