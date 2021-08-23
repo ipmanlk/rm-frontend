@@ -12,74 +12,10 @@ const colors = [
 
 // tile info
 const tileInfo = {
-	EMPLOYEE: { title: "Employee", icon: "fa-address-card" },
 	USER: { title: "User", icon: "fa-users" },
-	DESIGNATION: { title: "Designation", icon: "fa-sitemap" },
-	EMPLOYEE_STATUS: {
-		title: "Employee Status",
-		icon: "fa-handshake-o",
-	},
 	PRIVILEGE: { title: "Privilege", icon: "fa-lock" },
 	ROLE: { title: "Role", icon: "fa-user-circle" },
-	MATERIAL: { title: "Material", icon: "fa-th-large" },
-	SUPPLIER: { title: "Supplier", icon: "fa-truck" },
-	SUPPLIER_MATERIAL: {
-		title: "Supplier Material",
-		icon: "fa-bitbucket",
-	},
-	PRODUCT: { title: "Product", icon: "fa-cube" },
-	PRODUCT_PACKAGE: { title: "Product Package", icon: "fa-cubes" },
-	MATERIAL_ANALYSIS: {
-		title: "Material Analysis",
-		icon: "fa-connectdevelop",
-	},
-	PRODUCT_PACKAGE_COST_ANALYSIS: {
-		title: "Product Package Cost Analysis",
-		icon: "fa-connectdevelop",
-	},
-	QUOTATION_REQUEST: {
-		title: "Quotation Request",
-		icon: " fa-file-text-o",
-	},
-	QUOTATION: { title: "Quotation", icon: "fa-file-text-o" },
-	MATERIAL_INVENTORY: {
-		title: "Material Inventory",
-		icon: "fa-braille",
-	},
-	PURCHASE_ORDER: { title: "Purchase Order", icon: "fa-file-text-o" },
-	CUSTOMER: { title: "Customer", icon: "fa-male" },
-	GRN: { title: "GRN", icon: "fa-file-text-o" },
-	SUPPLIER_PAYMENT: {
-		title: "Supplier Payment",
-		icon: "fa-file-text-o",
-	},
-	CUSTOMER_ORDER: { title: "Customer Order", icon: "fa-file-text-o" },
-	CUSTOMER_INVOICE: {
-		title: "Customer Invoice",
-		icon: "fa-file-text-o",
-	},
-	PRODUCTION_ORDER: {
-		title: "Production Order",
-		icon: "fa-file-text-o",
-	},
-	PRODUCTION_ORDER_CONFIRM: {
-		title: "Production Order Confirm",
-		icon: "fa-file-text-o",
-	},
-	PRODUCTION_INVENTORY: {
-		title: "Production Inventory",
-		icon: "fa-th",
-	},
-	SALES_REPORT: { title: "Sales Report", icon: "fa-line-chart" },
-	DEMAND_REPORT: { title: "Demand Report", icon: "fa-line-chart" },
-	PRODUCTION_COST_REPORT: {
-		title: "Production Cost Report",
-		icon: "fa-line-chart",
-	},
-	REVENUE_REPORT: {
-		title: "Revenue Report",
-		icon: "fa-line-chart",
-	},
+	CANDIDATE_PROFILE: { title: "Candidate Profile", icon: "fa-user-circle" },
 };
 
 $(document).ready(() => {
