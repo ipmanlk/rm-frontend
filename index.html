@@ -239,7 +239,8 @@
 						const data = response.data;
 
 						// show avatar on dhashboard side menu
-						const avatarUrl = MiscUtil.getURLfromBuffer(data.photo);
+						const avatarUrl =
+							"http://localhost:3000/uploads/" + data.photoFilename;
 
 						// set global object
 						tempData.profile = data;
