@@ -13,7 +13,7 @@ async function loadModule(permissionStr) {
 	// create an array from permission string
 	const permission = permissionStr.split("").map((p) => parseInt(p));
 
-	$("*").on("click", (e) => {
+	$("input[type='button']").on("click", (e) => {
 		e.preventDefault();
 	});
 
@@ -27,6 +27,12 @@ async function loadModule(permissionStr) {
 
 	$("#btnAddToExpList").click((e) => {
 		addToExpList();
+	});
+
+	$("#btnUpdateProfile").click((e) => {
+		updateProfile().catch((e) => {
+			console.log(e);
+		});
 	});
 }
 
@@ -141,7 +147,10 @@ const removeFromList = (event) => {
 	updateListRemoveButtonListeners();
 };
 
-const getFormData = () => {};
+const updateProfile = async () => {
+	const photoFileName = (await Request.sendFileUploadRequest(photo.files[0]))
+		.fileName;
+};
 
 /*-------------------------------------------------------------------------------------------------------
                                             Operations

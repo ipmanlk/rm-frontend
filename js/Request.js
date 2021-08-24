@@ -109,10 +109,11 @@ class Request {
 
 			const options = {
 				url: "http://localhost:3000/api/upload",
+				enctype: "multipart/form-data",
 				data: formData,
 				cache: false,
-				contentType: "multipart/form-data",
 				processData: false,
+				contentType: false,
 				method: "POST",
 				dataType: "json",
 			};
