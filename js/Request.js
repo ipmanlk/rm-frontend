@@ -92,7 +92,7 @@ class Request {
 					console.log(e);
 					window.alert(
 						"Error",
-						`Unable to retrive data from the server: ${textStatus}`
+						`Unable to retrieve data from the server: ${textStatus}`
 					);
 				}
 
@@ -101,4 +101,51 @@ class Request {
 			});
 		});
 	}
+
+	static sendFileUploadRequest = (file) => {
+		return new Promise((resolve, reject) => {
+			const formData = new FormData();
+			formData.append("file", file);
+
+			const options = {
+				url: "http://localhost:3000/api/upload",
+				data: formData,
+				cache: false,
+				contentType: "multipart/form-data",
+				processData: false,
+				method: "POST",
+				dataType: "json",
+			};
+
+			const req = $.ajax(options);
+
+			req.done((res) => {
+				// if response doesn't have a status properly, ignore it
+				if (res.status == undefined) {
+					return;
+				} else {
+					resolve(res.data);
+				}
+			});
+
+			req.fail((jqXHR, textStatus) => {
+				if (jqXHR.responseJSON == undefined) return;
+
+				try {
+					mainWindow.showOutputModal("Error", jqXHR.responseJSON.msg);
+
+					if (jqXHR.responseJSON.type == "auth") {
+						window.location = "noauth.html";
+					}
+				} catch (e) {
+					console.log(e);
+					window.alert(
+						"Error",
+						`Unable to retrieve data from the server: ${textStatus}`
+					);
+				}
+				resolve({ status: false });
+			});
+		});
+	};
 }
