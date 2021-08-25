@@ -13,7 +13,7 @@ async function loadModule(permissionStr) {
 	// create an array from permission string
 	const permission = permissionStr.split("").map((p) => parseInt(p));
 
-	$("input[type='button']").on("click", (e) => {
+	$("input[type='button'], button").on("click", (e) => {
 		e.preventDefault();
 	});
 
@@ -52,13 +52,13 @@ const addToEducationList = () => {
 	<div class="col-xs-5">
 		<div class="form-group has-feedback">
 			<label>Name:</label>
-			<input type="text" class="form-control" placeholder="Qualification name"/>
+			<input type="text" class="form-control title" placeholder="Qualification name"/>
 		</div>
 	</div>
 	<div class="col-xs-5">
 		<div class="form-group has-feedback">
 			<label>Image / Proof:</label>
-			<input type="file" class="form-control" />
+			<input type="file" class="form-control proof" />
 		</div>
 	</div>
 	<div class="col-xs-2">
@@ -84,13 +84,13 @@ const addToProList = () => {
 	<div class="col-xs-5">
 		<div class="form-group has-feedback">
 			<label>Name:</label>
-			<input type="text" class="form-control" placeholder="Qualification name"/>
+			<input type="text" class="form-control title" placeholder="Qualification name"/>
 		</div>
 	</div>
 	<div class="col-xs-5">
 		<div class="form-group has-feedback">
 			<label>Image / Proof:</label>
-			<input type="file" class="form-control" />
+			<input type="file" class="form-control proof" />
 		</div>
 	</div>
 	<div class="col-xs-2">
@@ -116,13 +116,13 @@ const addToExpList = () => {
 	<div class="col-xs-5">
 		<div class="form-group has-feedback">
 			<label>Title:</label>
-			<input type="text" class="form-control" placeholder="Experience title"/>
+			<input type="text" class="form-control title" placeholder="Experience title"/>
 		</div>
 	</div>
 	<div class="col-xs-5">
 		<div class="form-group has-feedback">
 			<label>Image / Proof:</label>
-			<input type="file" class="form-control" />
+			<input type="file" class="form-control proof" />
 		</div>
 	</div>
 	<div class="col-xs-2">
@@ -148,8 +148,66 @@ const removeFromList = (event) => {
 };
 
 const updateProfile = async () => {
-	const photoFileName = (await Request.sendFileUploadRequest(photo.files[0]))
+	const photoFilename = (await Request.sendFileUploadRequest(photo.files[0]))
 		.fileName;
+
+	const shortName = $("#shortName").val();
+	const fullName = $("#fullName").val();
+	const mobile = $("#mobile").val();
+	const land = $("#land").val();
+	const address = $("#address").val();
+	const nic = $("#nic").val();
+
+	const nicFilename = (await Request.sendFileUploadRequest(fileNIC.files[0]))
+		.fileName;
+
+	const qualifications = await getQualifications();
+
+	console.log(
+		photoFilename,
+		shortName,
+		fullName,
+		mobile,
+		land,
+		address,
+		nic,
+		nicFilename,
+		qualifications
+	);
+};
+
+const getQualifications = async () => {
+	const qualificationSelectors = {
+		"#listEduQualifications": "Educational",
+		"#listProQualifications": "Professional",
+		"#listExperiences": "Experience",
+	};
+
+	const qualifications = [];
+
+	for (const selector of Object.keys(qualificationSelectors)) {
+		for (const row of $(selector).children(".row").toArray()) {
+			const titleElem = $(row).find(".title").first();
+			const fileElem = $(row).find(".proof").first();
+			const title = (titleElem.val() || titleElem.text()).trim();
+
+			if (fileElem.attr("type") == "file") {
+				if (!fileElem[0].files[0]) continue;
+				filename = (await Request.sendFileUploadRequest(fileElem[0].files[0]))
+					.fileName;
+			} else {
+				filename = fileElem.val();
+			}
+
+			qualifications.push({
+				title,
+				filename,
+				qualificationTypeName: qualificationSelectors[selector],
+			});
+		}
+	}
+
+	return qualifications;
 };
 
 /*-------------------------------------------------------------------------------------------------------
