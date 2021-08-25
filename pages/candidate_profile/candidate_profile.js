@@ -1,3 +1,7 @@
+const tempData = {
+	candidateProfile: null,
+};
+
 /*-------------------------------------------------------------------------------------------------------
                                             General
 -------------------------------------------------------------------------------------------------------*/
@@ -33,6 +37,16 @@ async function loadModule(permissionStr) {
 		updateProfile().catch((e) => {
 			console.log(e);
 		});
+	});
+
+	$("#photo").on("change", () => {
+		if (photo.files && photo.files[0]) {
+			$("#photoPreview").attr("src", URL.createObjectURL(photo.files[0]));
+		}
+	});
+
+	loadProfile().catch((e) => {
+		console.log(e);
 	});
 }
 
@@ -194,23 +208,166 @@ const registerFilename = (event) => {
                                             Operations
 -------------------------------------------------------------------------------------------------------*/
 
-const updateProfile = async () => {
-	const photoFilename = (await Request.sendFileUploadRequest(photo.files[0]))
-		.filename;
+const loadProfile = async () => {
+	const userId = mainWindow.tempData.profile.id;
 
+	const response = await Request.send("/api/candidate_profiles", "GET", {
+		data: { userId },
+	});
+
+	const entry = response.data;
+
+	if (!entry) return;
+
+	tempData.candidateProfile = entry;
+
+	// fill form
+	Object.keys(entry).forEach((key) => {
+		$(`#${key}`).val(entry[key]);
+	});
+
+	$("#nicFilename").val(entry.nicFilename);
+	$("#photoFilename").val(entry.photoFilename);
+	$("#photoPreview").attr(
+		"src",
+		`http://localhost:3000/uploads/${entry.photoFilename}`
+	);
+
+	entry.candidateQualifications.forEach((q) => {
+		if (q.qualificationType.name == "Educational") {
+			$("#listEduQualifications").append(`
+			<div class="row">
+			<div class="col-xs-6">
+				<div class="form-group has-feedback">
+					<label>Name:</label>
+					<input type="text" class="form-control title" placeholder="Qualification name" value="${q.name}"/>
+				</div>
+			</div>
+		
+			<div class="col-xs-5">
+				<div class="form-group has-feedback">
+					<label>Image / Proof:</label>
+					<input type="file" class="form-control proof" />
+				</div>
+			</div>
+		
+			<div style="display: none">
+				<div class="form-group has-feedback">
+					<label>Filename:</label>
+					<input type="text" class="form-control filename" value="${q.filename}" disabled/>
+				</div>
+			</div>
+		
+			<div class="col-xs-1">
+				<div class="form-group" style="float: right">
+					<label style="color: white">button</label>
+					<input
+						type="button"
+						class="btn btn-danger btn-remove-from-list"
+						style="display: block"
+						value="x"
+					/>
+				</div>
+			</div>
+		</div>
+			`);
+		} else if (q.qualificationType.name == "Professional") {
+			$("#listProQualifications").append(`
+			<div class="row">
+			<div class="col-xs-6">
+				<div class="form-group has-feedback">
+					<label>Name:</label>
+					<input type="text" class="form-control title" placeholder="Qualification name" value="${q.name}"/>
+				</div>
+			</div>
+		
+			<div class="col-xs-5">
+				<div class="form-group has-feedback">
+					<label>Image / Proof:</label>
+					<input type="file" class="form-control proof" />
+				</div>
+			</div>
+		
+			<div style="display: none">
+				<div class="form-group has-feedback">
+					<label>Filename:</label>
+					<input type="text" class="form-control filename" value="${q.filename}" disabled/>
+				</div>
+			</div>
+		
+			<div class="col-xs-1">
+				<div class="form-group" style="float: right">
+					<label style="color: white">button</label>
+					<input
+						type="button"
+						class="btn btn-danger btn-remove-from-list"
+						style="display: block"
+						value="x"
+					/>
+				</div>
+			</div>
+		</div>
+			`);
+		} else {
+			$("#listProQualifications").append(`
+			<div class="row">
+			<div class="col-xs-6">
+				<div class="form-group has-feedback">
+					<label>Title:</label>
+					<input type="text" class="form-control title" placeholder="Experience title" value="${q.name}"/>
+				</div>
+			</div>
+		
+			<div class="col-xs-5">
+				<div class="form-group has-feedback">
+					<label>Image / Proof:</label>
+					<input type="file" class="form-control proof" />
+				</div>
+			</div>
+		
+			<div style="display: none">
+				<div class="form-group has-feedback">
+					<label>Filename:</label>
+					<input type="text" class="form-control filename" value="${q.filename}" disabled/>
+				</div>
+			</div>
+		
+			<div class="col-xs-1">
+				<div class="form-group" style="float: right">
+					<label style="color: white">button</label>
+					<input
+						type="button"
+						class="btn btn-danger btn-remove-from-list"
+						style="display: block"
+						value="x"
+					/>
+				</div>
+			</div>
+		</div>
+			`);
+		}
+	});
+
+	updateFormListeners();
+};
+
+const updateProfile = async () => {
+	const photoFilename = photo.files[0]
+		? (await Request.sendFileUploadRequest(photo.files[0])).filename
+		: $("#photoFilename").val();
 	const shortName = $("#shortName").val();
 	const fullName = $("#fullName").val();
 	const mobile = $("#mobile").val();
 	const land = $("#land").val();
 	const address = $("#address").val();
 	const nic = $("#nic").val();
-
-	const nicFilename = (await Request.sendFileUploadRequest(fileNIC.files[0]))
-		.filename;
+	const nicFilename = fileNIC.files[0]
+		? (await Request.sendFileUploadRequest(fileNIC.files[0])).filename
+		: $("#nicFilename").val();
 
 	const qualifications = await getQualifications();
 
-	console.log(
+	const data = {
 		photoFilename,
 		shortName,
 		fullName,
@@ -219,8 +376,17 @@ const updateProfile = async () => {
 		address,
 		nic,
 		nicFilename,
-		qualifications
-	);
+		qualifications,
+		userId: mainWindow.tempData.profile.id,
+	};
+
+	if (tempData.candidateProfile) {
+		data.id = tempData.candidateProfile.id;
+	}
+
+	const response = await Request.send("/api/candidate_profiles", "PUT", {
+		data: data,
+	});
 };
 
 const getQualifications = async () => {
@@ -236,21 +402,35 @@ const getQualifications = async () => {
 		for (const row of $(selector).children(".row").toArray()) {
 			const titleElem = $(row).find(".title").first();
 			const fileElem = $(row).find(".proof").first();
-			const title = (titleElem.val() || titleElem.text()).trim();
+			const filenameElem = $(row).find(".filename").first();
+			const name = (titleElem.val() || titleElem.text()).trim();
 
-			if (fileElem.attr("type") == "file") {
-				if (!fileElem[0].files[0]) continue;
+			let filename;
+
+			if (fileElem[0] && fileElem[0].files[0]) {
 				filename = (await Request.sendFileUploadRequest(fileElem[0].files[0]))
 					.filename;
+			} else if (tempData.candidateProfile != null && filenameElem) {
+				filename = $(filenameElem).val();
 			} else {
-				filename = fileElem.val();
+				continue;
 			}
 
-			qualifications.push({
-				title,
+			const qualification = {
+				name,
 				filename,
 				qualificationTypeName: qualificationSelectors[selector],
-			});
+			};
+
+			const result = tempData.candidateProfile.candidateQualifications.find(
+				(p) => p.filename == filename
+			);
+
+			if (result) {
+				qualification.id = result.id;
+			}
+
+			qualifications.push(qualification);
 		}
 	}
 
