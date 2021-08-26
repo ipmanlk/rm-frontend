@@ -387,6 +387,10 @@ const updateProfile = async () => {
 	const response = await Request.send("/api/candidate_profiles", "PUT", {
 		data: data,
 	});
+
+	if (response.status) {
+		mainWindow.showOutputToast("Success!", response.msg);
+	}
 };
 
 const getQualifications = async () => {
