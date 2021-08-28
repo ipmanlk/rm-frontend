@@ -18,6 +18,7 @@ const tileInfo = {
 	CANDIDATE_PROFILE: { title: "Candidate Profile", icon: "fa-user-circle" },
 	JOB_CATEGORY: { title: "Job Category", icon: "fa-user-circle" },
 	DEPARTMENT: { title: "Department", icon: "fa-user-circle" },
+	JOB_VACANCY: { title: "Job Vacancy", icon: "fa-user-circle" },
 };
 
 $(document).ready(() => {
