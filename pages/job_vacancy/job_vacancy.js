@@ -3,10 +3,10 @@
 -------------------------------------------------------------------------------------------------------*/
 
 async function loadModule(permissionStr) {
-	// // get regexes for validation and store on window tempData
-	// const response = await Request.send("/api/regexes", "GET", {
-	// 	data: { module: "JOB_VACANCY" },
-	// });
+	// get regexes for validation and store on window tempData
+	const response = await Request.send("/api/regexes", "GET", {
+		data: { module: "JOB_VACANCY" },
+	});
 
 	const validationInfo = response.data;
 
@@ -22,15 +22,16 @@ async function loadModule(permissionStr) {
 		// parse resposne data and return in data table frendly format
 		return responseData.map((entry) => {
 			return {
-				Code: entry.code,
-				Name: entry.name,
-				Type: entry.materialType.name,
-				"Current Unit Price": entry.unitPrice,
-				Status: entry.materialStatus.name,
+				ID: entry.id,
+				Name: entry.title,
+				Position: entry.position,
+				Department: entry.department.name,
+				Category: entry.jobCategory.name,
+				Status: entry.jobVacancyStatus.name,
 				View: `<button class="btn btn-success btn-sm" onclick="showEditEntryModal('${entry.id}', true)"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> View</button>`,
 				Edit: `<button class="btn btn-warning btn-sm" onclick="showEditEntryModal('${entry.id}')"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i> Edit</button>`,
 				Delete: `${
-					entry.materialStatus.name == "Deleted"
+					entry.jobVacancyStatus.name == "Deleted"
 						? '<button style="display:none">Delete</button>'
 						: `<button class="btn btn-danger btn-sm" onclick="deleteEntry('${entry.id}')"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i> Delete</button>`
 				}`,
@@ -40,25 +41,24 @@ async function loadModule(permissionStr) {
 
 	window.mainTable = new DataTable(
 		"mainTableHolder",
-		"/api/materials",
+		"/api/job_vacancies",
 		permission,
 		dataBuilderFunction,
-		"Material List"
+		"Job Vacancies List"
 	);
 
 	// load main from
 	window.mainForm = new Form(
 		"mainForm",
-		"Material Details",
+		"Job Vacancy Details",
 		permission,
 		validationInfo,
 		[
-			{ id: "materialTypeId", route: "/api/general?data[table]=material_type" },
-			{ id: "riskCategoryId", route: "/api/general?data[table]=risk_category" },
-			{ id: "unitTypeId", route: "/api/general?data[table]=unit_type" },
+			{ id: "departmentId", route: "/api/departments" },
+			{ id: "jobCategoryId", route: "/api/job_categories" },
 			{
-				id: "materialStatusId",
-				route: "/api/general?data[table]=material_status",
+				id: "jobVacancyStatusId",
+				route: "/api/general?data[table]=job_vacancy_status",
 				statusField: true,
 			},
 		],
@@ -74,10 +74,6 @@ async function loadModule(permissionStr) {
 		showNewEntryModal();
 	});
 
-	$("#btnTopSupplierMaterial").click(() => {
-		mainWindow.showViewModal("/?page=supplier_material", "50vh");
-	});
-
 	// catch promise rejections
 	$(window).on("unhandledrejection", (event) => {
 		console.error(
@@ -87,15 +83,6 @@ async function loadModule(permissionStr) {
 			event.reason,
 			")."
 		);
-	});
-
-	// format decimal inputs automatically
-	$("#unitPrice").on("blur", (e) => {
-		const value = e.target.value;
-		if (!isNaN(value) && value.trim() != "") {
-			e.target.value = parseFloat(value).toFixed(2);
-			$(e.target).trigger("keyup");
-		}
 	});
 }
 
@@ -111,24 +98,20 @@ const reloadModule = () => {
 
 const showNewEntryModal = () => {
 	mainForm.reset();
-	$("#mainForm #code").val("Code will be displayed after adding.");
+	$("#mainForm #id").val("ID will be displayed after adding.");
 	// set date of adding
 	$("#mainForm #addedDate").val(new Date().today());
 
-	// set created employee number
-	const employeeNumber = mainWindow.tempData.profile.employee.number;
-	const employeeCallingName = mainWindow.tempData.profile.employee.callingName;
-	$("#mainForm #createdEmployee").val(
-		`${employeeCallingName} (${employeeNumber})`
-	);
+	const username = mainWindow.tempData.profile.username;
+	$("#mainForm #createdUser").val(username);
 
-	$("#modalMainFormTitle").text("Add New Material");
+	$("#modalMainFormTitle").text("Add New Job Vacancy");
 	$("#modalMainForm").modal("show");
 };
 
 const showEditEntryModal = async (id, readOnly = false) => {
 	// get entry data from db and show in the form
-	const response = await Request.send("/api/materials", "GET", {
+	const response = await Request.send("/api/job_vacancies", "GET", {
 		data: { id: id },
 	});
 	const entry = response.data;
@@ -137,10 +120,10 @@ const showEditEntryModal = async (id, readOnly = false) => {
 
 	if (readOnly) {
 		mainForm.enableReadOnly();
-		$("#modalMainFormTitle").text("View Material");
+		$("#modalMainFormTitle").text("View Job Vacancy");
 	} else {
 		mainForm.disableReadOnly();
-		$("#modalMainFormTitle").text("Edit Material");
+		$("#modalMainFormTitle").text("Edit Job Vacancy");
 	}
 
 	$("#modalMainForm").modal("show");
@@ -160,7 +143,9 @@ const addEntry = async () => {
 	}
 
 	// get response
-	const response = await Request.send("/api/materials", "POST", { data: data });
+	const response = await Request.send("/api/job_vacancies", "POST", {
+		data: data,
+	});
 
 	// show output modal based on response
 	if (response.status) {
@@ -168,8 +153,8 @@ const addEntry = async () => {
 		$("#modalMainForm").modal("hide");
 		mainWindow.showOutputToast("Success!", response.msg);
 		mainWindow.showOutputModal(
-			"New Material Added!",
-			`<h4>Code: ${response.data.code}</h4>`
+			"New Job Vacancy Added!",
+			`<h4>ID: ${response.data.id}</h4>`
 		);
 	}
 };
@@ -200,7 +185,7 @@ const updateEntry = async () => {
 	newEntryObj.id = mainForm.selectedEntry.id;
 
 	// send put reqeust to update data
-	const response = await Request.send("/api/materials", "PUT", {
+	const response = await Request.send("/api/job_vacancies", "PUT", {
 		data: newEntryObj,
 	});
 
@@ -220,7 +205,7 @@ const deleteEntry = async (id) => {
 	);
 
 	if (confirmation) {
-		const response = await Request.send("/api/materials", "DELETE", {
+		const response = await Request.send("/api/job_vacancies", "DELETE", {
 			data: { id: id },
 		});
 		if (response.status) {
