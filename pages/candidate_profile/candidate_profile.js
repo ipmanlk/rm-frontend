@@ -9,7 +9,7 @@ const tempData = {
 async function loadModule(permissionStr) {
 	// get regexes for validation and store on window tempData
 	const response = await Request.send("/api/regexes", "GET", {
-		data: { module: "ROLE" },
+		data: { module: "CANDIDATE_PROFILE" },
 	});
 
 	const validationInfo = response.data;
