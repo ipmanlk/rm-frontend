@@ -4,89 +4,76 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Two Elephant Fireworks: Login</title>
-	<link rel="stylesheet" href="./lib/fontawesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="./lib/fontawesome/typicons/typicons.min.css">
-	<link rel="stylesheet" href="./lib/animate/animate.css">
+	<title>Recruitment Management System: Login</title>
 	<link rel="stylesheet" href="./lib/login/css/login.css">
-	<style>
-		body,
-		div {
-			z-index: -1;
-		}
-
-		.modal-placeholder {
-			z-index: 1;
-			display: flex;
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.model {
-			width: 80vw;
-			height: 80vh;
-			background-color: aqua;
-		}
-
-		iframe {
-			width: 80vw;
-			height: 80vh;
-		}
-
-		.button {
-			display: flex;
-			margin-top: 10px;
-			justify-content: center;
-		}
-
-		.button button {
-			width: 200px;
-			height: 40px;
-			background-color: orange;
-			border: none;
-			border-radius: 10px;
-		}
-	</style>
+	<script src="./lib/sweetalert/sweetalert2.all.min.js"></script>
 </head>
 
 <body>
+	<div class="container">
+		<div class="container-background"></div>
 
-	<body id="particles-js"></body>
-	<div class="animated bounceInDown">
-		<div class="container">
-			<span class="error animated tada" id="msg"></span>
-			<form name="form1" class="box" onsubmit="return false">
-				<h4>Two Elephant Fireworks <span>Dashboard</span></h4>
-				<h5>Sign in to your account.</h5>
-				<input type="text" id="username" name="username" placeholder="Username" autocomplete="off">
-				<i class="typcn typcn-eye" id="eye"></i>
-				<input type="password" id="password" name="password" placeholder="Passsword" id="pwd" autocomplete="off">
-				<!-- <label>
-					<input type="checkbox">
-					<span></span>
-					<small class="rmb">Remember me</small>
-				</label> -->
-				<a href="#" class="forgetpass">Forget Password?</a>
-				<input type="submit" value="Sign in" class="btn1">
-			</form>
-		</div>
-	</div>
+		<div class="content">
+			<div class="login-wrap">
+				<div class="login-html">
 
-	<div class="modal-placeholder">
-		<div class="modal">
-			<iframe src="password_reset.html" frameborder="0"></iframe>
-			<div class="button">
-				<button>Close</button>
+					<center>
+						<h3 class="card-title">Recruitment Management System</h3>
+					</center>
+					<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
+					<input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+					<div class="login-form">
+						<div class="sign-in-htm">
+							<div class="group">
+								<label for="userLogin" class="label">Username</label>
+								<input id="userLogin" type="text" class="input">
+							</div>
+							<div class="group">
+								<label for="passLogin" class="label">Password</label>
+								<input id="passLogin" type="password" class="input" data-type="password">
+							</div>
+							<div style="margin-top: 40px;"></div>
+							<div class="group">
+								<input type="button" id="btnLogin" class="button" value="Sign In">
+							</div>
+							<div class="hr"></div>
+							<!-- <div class="foot-lnk">
+								<a href="#forgot">Forgot Password?</a>
+							</div> -->
+						</div>
+						<div class="sign-up-htm">
+							<div class="group">
+								<label for="user" class="label">Username</label>
+								<input id="user" type="text" class="input">
+							</div>
+							<div class="group">
+								<label for="pass" class="label">Password</label>
+								<input id="pass" type="password" class="input" data-type="password">
+							</div>
+							<div class="group">
+								<label for="pass" class="label">Repeat Password</label>
+								<input id="pass1" type="password" class="input" data-type="password">
+							</div>
+							<!-- <div class="group">
+								<label for="pass" class="label">Email Address</label>
+								<input id="pass" type="text" class="input">
+							</div> -->
+							<div class="group">
+								<input type="button" id="btnSignup" class="button" value="Sign Up">
+							</div>
+							<div class="hr"></div>
+							<div class="foot-lnk">
+								<label for="tab-1">Already Member?</a>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
+	
 	</div>
-	<script src="./lib/particles/particles.min.js"></script>
+
 	<script src="./lib/jquery/jquery.min.js"></script>
-	<script src="./lib/login/js/login.js"></script>
 
 	<script>
 		$(document).ready(() => {
@@ -94,12 +81,12 @@
 
 			$("form").on("submit", (e) => {
 				e.preventDefault();
-				logIn();
 			});
+
+			$("#btnLogin").click(logIn)
 		})
 
 		const logIn = () => {
-			if (!checkStuff()) return;
 
 			// create http request
 			const request = $.ajax({
@@ -109,8 +96,8 @@
 				dataType: "json",
 				data: JSON.stringify({
 					data: {
-						username: $("#username").val(),
-						password: $("#password").val()
+						username: $("#userLogin").val(),
+						password: $("#passLogin").val()
 					}
 				})
 			});
@@ -120,28 +107,27 @@
 				if (res.status) {
 					window.location = "./index.html";
 				} else {
-					msg.style.display = "block";
-					msg.innerHTML = res.msg;
+
+					Swal.fire({
+						title: 'Error!',
+						text: res.msg,
+						icon: 'error',
+						confirmButtonText: 'Ok'
+					})
 				}
 			});
 
 			// when server is unreachable or request failed
 			request.fail(function () {
-				msg.style.display = "block";
-				msg.innerHTML = "Unable to contact the server!.";
+				Swal.fire({
+					title: 'Unable to contact the server!.',
+					text: res.msg,
+					icon: 'error',
+					confirmButtonText: 'Ok'
+				})
 			});
 		}
 
-		// code for handling password reset iframe
-		// close button
-		$(".button button").click(() => {
-			$(".modal-placeholder").fadeOut();
-		});
-
-		//open link
-		$(".forgetpass").click(() => {
-			$(".modal-placeholder").fadeIn();
-		})
 	</script>
 
 </body>
