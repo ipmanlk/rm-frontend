@@ -23,6 +23,10 @@ const tileInfo = {
 		title: "Candidate Profile Review",
 		icon: "fa-user-circle",
 	},
+	EMPLOYEE: {
+		title: "Employee",
+		icon: "fa-user-circle",
+	},
 };
 
 $(document).ready(() => {

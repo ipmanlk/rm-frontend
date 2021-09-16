@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css" />
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="../../lib/datatable/datatable.css"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="../../lib/bootstrap-select/css/bootstrap-select.min.css"
+		/>
+
+		<link rel="stylesheet" type="text/css" href="../../css/pages/common.css" />
+	</head>
+
+	<body>
+		<div class="container-fluid" style="margin-top: 20px; margin-bottom: 100px">
+			<div
+				id="actionButtonHolder"
+				class="row"
+				style="margin-bottom: 20px; padding-left: 35px"
+			>
+				<div class="col-md-12">
+					<button id="btnTopAddEntry" class="btn btn-primary">
+						<i class="glyphicon glyphicon-plus-sign" aria-hidden="true"></i>
+						Add New Employee
+					</button>
+				</div>
+			</div>
+
+			<div
+				id="mainTableHolder"
+				class="container-fluid"
+				style="margin-top: 30px"
+			></div>
+
+			<div class="modal fade" id="modalMainForm" role="dialog">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content" style="margin-bottom: 100px">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">
+								&times;
+							</button>
+							<h4 class="modal-title" id="modalMainFormTitle">Modal Header</h4>
+						</div>
+						<div class="modal-body">
+							<form id="mainForm">
+								<div class="row">
+									<div class="col-md-12">
+										<div style="float: right">
+											<b><span class="required">*</span> Required field</b>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group has-feedback">
+									<label for="userId"
+										>User: <span class="required">*</span></label
+									>
+									<select
+										name="userId"
+										id="userId"
+										class="form-control"
+										data-live-search="true"
+										title="Please select a user"
+									></select>
+								</div>
+
+								<div class="form-group has-feedback image-upload">
+									<label for="photo"
+										>Photo: <span class="required">*</span></label
+									>
+									<img
+										class="photo-input"
+										id="photoPreview"
+										src="../../img/avatar.png"
+									/>
+									<input
+										type="file"
+										class="form-control"
+										id="photo"
+										name="photo"
+									/>
+									<input
+										type="text"
+										class="form-control"
+										id="photoFilename"
+										name="photoFilename"
+										style="display: none"
+									/>
+								</div>
+
+								<div class="form-group has-feedback">
+									<label for="shortName"
+										>Name with initials: <span class="required">*</span></label
+									>
+									<input
+										type="text"
+										class="form-control"
+										id="shortName"
+										placeholder="D.A. Nirmal Diaz"
+										name="shortName"
+									/>
+								</div>
+
+								<div class="form-group has-feedback">
+									<label for="fullName"
+										>Name in Full: <span class="required">*</span></label
+									>
+									<input
+										type="text"
+										class="form-control"
+										id="fullName"
+										placeholder="Dushmanthalage Nirmal Diaz Dushmantha"
+										name="fullName"
+									/>
+								</div>
+
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group has-feedback">
+											<label for="mobile"
+												>Mobile Number: <span class="required">*</span></label
+											>
+											<input
+												type="text"
+												class="form-control"
+												id="mobile"
+												placeholder="0715589641"
+												name="mobile"
+												data-editable="true"
+											/>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group has-feedback">
+											<label for="land">Land Number:</label>
+											<input
+												type="text"
+												class="form-control"
+												id="land"
+												placeholder="0362244789"
+												name="land"
+												data-editable="true"
+											/>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group has-feedback">
+									<label for="address"
+										>Address: <span class="required">*</span></label
+									>
+									<textarea
+										class="form-control"
+										name="address"
+										id="address"
+										cols="30"
+										rows="3"
+										placeholder="80/1, Colombo Rd., Nugegoda."
+										data-editable="true"
+									></textarea>
+								</div>
+
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group has-feedback">
+											<label for="nic"
+												>NIC: <span class="required">*</span></label
+											>
+											<input
+												type="text"
+												class="form-control"
+												id="nic"
+												placeholder="980512436V"
+												name="nic"
+											/>
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="form-group has-feedback">
+											<label for="fileNIC"
+												>NIC Image / Proof:
+												<span class="required">*</span></label
+											>
+											<input
+												type="file"
+												class="form-control"
+												id="fileNIC"
+												name="fileNIC"
+											/>
+											<input
+												type="text"
+												class="form-control"
+												style="display: none"
+												id="nicFilename"
+												name="nicFilename"
+											/>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group sub-form">
+									<label
+										>Education Qualifications:
+										<span class="required">*</span></label
+									>
+									<div id="listEduQualifications"></div>
+									<div>
+										<button
+											id="btnAddToEduList"
+											class="btn btn-primary btn-block"
+										>
+											Add Educational Qualification
+										</button>
+									</div>
+								</div>
+
+								<div class="form-group sub-form">
+									<label
+										>Professional Qualifications:
+										<span class="required">*</span></label
+									>
+									<div id="listProQualifications"></div>
+									<div>
+										<button
+											id="btnAddToProList"
+											class="btn btn-primary btn-block"
+										>
+											Add Professional Qualification
+										</button>
+									</div>
+								</div>
+
+								<div class="form-group sub-form">
+									<label>Experiences: <span class="required">*</span></label>
+									<div id="listExperiences"></div>
+									<div>
+										<button
+											id="btnAddToExpList"
+											class="btn btn-primary btn-block"
+										>
+											Add Experience
+										</button>
+									</div>
+								</div>
+
+								<div class="form-group has-feedback">
+									<label for="candidateProfileReviewStatusId"
+										>Employee Status: <span class="required">*</span>
+									</label>
+									<select
+										name="employeeStatusId"
+										id="employeeStatusId"
+										class="form-control"
+									></select>
+								</div>
+
+								<div id="fmButtons">
+									<button type="button" class="btnFmAdd btn btn-success">
+										Add
+									</button>
+									<button type="button" class="btnFmUpdate btn btn-warning">
+										Update
+									</button>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<!-- <button
+								id="btnModalYes"
+								type="button"
+								class="btn btn-danger"
+								style="float: left"
+							>
+								Yes
+							</button>
+							<button
+								id="btnModalNo"
+								type="button"
+								class="btn btn-default"
+								data-dismiss="modal"
+							>
+								No
+							</button> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div style="margin-top: 5000px"></div>
+		</div>
+
+		<!-- libs -->
+		<script src="../../lib/jquery/jquery.min.js"></script>
+		<script src="../../lib/bootstrap/js/bootstrap.min.js"></script>
+		<script src="../../lib/bootstrap-select/js/bootstrap-select.min.js"></script>
+		<script src="../../lib/datatable/datatable.v2.js"></script>
+
+		<!-- common stuff -->
+		<script src="../../js/Request.js"></script>
+		<script src="../../js/Form.js"></script>
+		<script src="../../js/FormUtil.js"></script>
+		<script src="../../js/MiscUtil.js"></script>
+
+		<!-- main js -->
+		<script src="employee.js"></script>
+	</body>
+</html>
