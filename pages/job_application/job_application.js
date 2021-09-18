@@ -18,6 +18,7 @@ async function loadModule(permissionStr) {
 		// parse response data and return in data table friendly format
 		return responseData.map((entry) => {
 			return {
+				Code: entry.code,
 				Name: entry.title,
 				Position: entry.position,
 				Department: entry.department.name,
