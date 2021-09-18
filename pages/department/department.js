@@ -18,6 +18,7 @@ async function loadModule(permissionStr) {
 		// parse resposne data and return in data table frendly format
 		return responseData.map((entry) => {
 			return {
+				Code: entry.code,
 				Name: entry.name,
 				Edit: `<button class="btn btn-warning btn-sm" onclick="showEditEntryModal('${entry.id}')"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i> Edit</button>`,
 				Delete: `<button class="btn btn-danger btn-sm" onclick="deleteEntry('${entry.id}')"><i class="glyphicon glyphicon-trash" aria-hidden="true"></i> Delete</button>`,
