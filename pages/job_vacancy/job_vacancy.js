@@ -22,7 +22,7 @@ async function loadModule(permissionStr) {
 		// parse resposne data and return in data table frendly format
 		return responseData.map((entry) => {
 			return {
-				ID: entry.id,
+				Code: entry.code,
 				Name: entry.title,
 				Position: entry.position,
 				Department: entry.department.name,
