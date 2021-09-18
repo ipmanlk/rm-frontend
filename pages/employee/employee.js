@@ -26,7 +26,7 @@ async function loadModule(permissionStr) {
 		// parse resposne data and return in data table frendly format
 		return responseData.map((entry) => {
 			return {
-				ID: entry.id,
+				Code: entry.code,
 				Username: entry.user.username,
 				Name: entry.shortName,
 				View: `<button class="btn btn-success btn-sm" onclick="showEditEntryModal('${entry.id}', true)"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> View</button>`,
@@ -89,7 +89,8 @@ const showNewEntryModal = () => {
 	$(".btnFmAdd, .btnFmUpdate").hide();
 	$(".btnFmAdd").show();
 
-	// set date of adding
+	$(".code").hide();
+	resetForm();
 	$("#mainForm #addedDate").val(new Date().today());
 
 	$("#modalMainFormTitle").text("Add New Employee");
@@ -103,6 +104,8 @@ const showEditEntryModal = async (id, readOnly = false) => {
 
 	$(".btnFmAdd, .btnFmUpdate").hide();
 
+	$(".code").show();
+
 	if (readOnly) {
 		$("#mainForm").addClass("read-only");
 		$("#modalMainFormTitle").text("View Employee");
@@ -113,6 +116,14 @@ const showEditEntryModal = async (id, readOnly = false) => {
 	}
 
 	$("#modalMainForm").modal("show");
+};
+
+const resetForm = () => {
+	$("#mainForm input").val("");
+	$("#listEduQualifications").html("");
+	$("#listProQualifications").html("");
+	$("#listExperiences").html("");
+	$("#userId").selectpicker("val", "");
 };
 
 /*-------------------------------------------------------------------------------------------------------
@@ -455,6 +466,7 @@ const loadProfile = async (id) => {
 };
 
 const updateEmployee = async () => {
+	const code = $("#code").val();
 	const userId = $("#userId").val();
 	const photoFilename = photo.files[0]
 		? (await Request.sendFileUploadRequest(photo.files[0])).filename
@@ -485,6 +497,10 @@ const updateEmployee = async () => {
 		qualifications,
 		employeeStatusId,
 	};
+
+	if (code.trim() != "") {
+		data["code"] = code;
+	}
 
 	if (tempData.employeeProfile) {
 		data.id = tempData.employeeProfile.id;
