@@ -31,6 +31,10 @@ const tileInfo = {
 		title: "Job Application",
 		icon: "fa-user-circle",
 	},
+	JOB_APPLICATION_REVIEW: {
+		title: "Job Application Review",
+		icon: "fa-user-circle",
+	},
 };
 
 $(document).ready(() => {
