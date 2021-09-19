@@ -34,34 +34,17 @@ async function loadModule(permissionStr) {
 		"/api/job_application_reviews",
 		permission,
 		dataBuilderFunction,
-		"Job Vacancies List"
+		"Job Applications List"
 	);
 
-	// load main from
-	window.mainForm = new Form(
-		"mainForm",
-		"Job Vacancy Details",
-		permission,
-		[],
-		[
-			{ id: "departmentId", route: "/api/departments" },
-			{ id: "jobCategoryId", route: "/api/job_categories" },
-			{
-				id: "jobVacancyStatusId",
-				route: "/api/general?data[table]=job_vacancy_status",
-			},
-		],
-		{
-			addEntry: null,
-			deleteEntry: null,
-			updateEntry: null,
-		}
-	);
-
-	// event listeners for top action buttons
-	$("#btnApply").on("click", (e) => {
+	$("#btnScheduleInterview").click((e) => {
 		e.preventDefault();
-		submitApplication();
+		scheduleInterview();
+	});
+
+	$("#btnRejectApplication").click((e) => {
+		e.preventDefault();
+		rejectApplication();
 	});
 
 	// init datetime picker
@@ -81,7 +64,6 @@ async function loadModule(permissionStr) {
 
 // reload main table data and from after making a change
 const reloadModule = () => {
-	mainForm.reset();
 	mainTable.reload();
 };
 
@@ -209,22 +191,76 @@ const submitApplication = async () => {
 	}
 };
 
-// TODO: finish if i get a chance
-// delete entry from the database
-// const retractApplication = async (id) => {
-// 	const confirmation = await mainWindow.showConfirmModal(
-// 		"Confirmation",
-// 		"Do you really need to delete this entry?"
-// 	);
+const scheduleInterview = async () => {
+	const datetimeStr = $("#idateTime").val().trim();
 
-// 	if (confirmation) {
-// 		const response = await Request.send("/api/job_vacancies", "DELETE", {
-// 			data: { id: id },
-// 		});
-// 		if (response.status) {
-// 			reloadModule();
-// 			$("#modalMainForm").modal("hide");
-// 			mainWindow.showOutputToast("Success!", response.msg);
-// 		}
-// 	}
-// };
+	if (datetimeStr === "") {
+		mainWindow.showOutputModal("Error", "Please select a date and time first.");
+		return;
+	}
+
+	const today = new Date();
+	const interviewDate = new Date(datetimeStr);
+
+	if (today >= interviewDate) {
+		mainWindow.showOutputModal(
+			"Error",
+			"Interview date must be in the future."
+		);
+		return;
+	}
+
+	const location = $("#ilocation").val().trim();
+	if (location === "") {
+		mainWindow.showOutputModal(
+			"Error",
+			"Please provide a valid interview location."
+		);
+		return;
+	}
+
+	const data = {
+		jobApplicationId: tempData.selectedEntry.id,
+		jobApplicationStatusName: "Accepted",
+		interviewDateTime: datetimeStr,
+		location: location,
+	};
+
+	const response = await Request.send("/api/job_application_reviews", "PUT", {
+		data: data,
+	});
+
+	// show output modal based on response
+	if (response.status) {
+		reloadModule();
+		$("#modalMainForm").modal("hide");
+		mainWindow.showOutputToast("Success!", response.msg);
+		mainWindow.showOutputModal("Success!", response.msg);
+	}
+};
+
+const rejectApplication = async () => {
+	const confirmation = await mainWindow.showConfirmModal(
+		"Confirmation",
+		"Do you really want to reject this application?"
+	);
+
+	if (!confirmation) return;
+
+	const data = {
+		jobApplicationId: tempData.selectedEntry.id,
+		jobApplicationStatusName: "Rejected",
+	};
+
+	const response = await Request.send("/api/job_application_reviews", "PUT", {
+		data: data,
+	});
+
+	// show output modal based on response
+	if (response.status) {
+		reloadModule();
+		$("#modalMainForm").modal("hide");
+		mainWindow.showOutputToast("Success!", response.msg);
+		mainWindow.showOutputModal("Success!", response.msg);
+	}
+};
