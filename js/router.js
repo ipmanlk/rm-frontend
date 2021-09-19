@@ -126,6 +126,10 @@ const getRoutes = () => {
 			title: "Job Application Review View",
 			path: "/pages/job_application_review/job_application_review.html",
 		},
+		candidate_interview: {
+			title: "Candidate Interview View",
+			path: "/pages/candidate_interview/candidate_interview.html",
+		},
 		noauth: {
 			title: "Auth Failure",
 			path: "/pages/noauth.html",

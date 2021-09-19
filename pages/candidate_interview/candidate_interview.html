@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css" />
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="../../lib/datatable/datatable.css"
+		/>
+		<link rel="stylesheet" type="text/css" href="../../css/pages/common.css" />
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="../../lib/datetimepicker/jquery.datetimepicker.min.css"
+		/>
+	</head>
+
+	<body>
+		<div class="container-fluid" style="margin-top: 20px; margin-bottom: 100px">
+			<div
+				id="mainTableHolder"
+				class="container-fluid"
+				style="margin-top: 30px"
+			></div>
+
+			<div class="modal fade" id="modalMainForm" role="dialog">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content" style="margin-bottom: 100px">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">
+								&times;
+							</button>
+							<h4 class="modal-title" id="modalMainFormTitle">Modal Header</h4>
+						</div>
+						<div class="modal-body">
+							<div class="forms">
+								<ul class="nav nav-tabs">
+									<li class="active">
+										<a data-toggle="tab" href="#tab1">Job Vacancy</a>
+									</li>
+									<li>
+										<a data-toggle="tab" href="#tab2">Interview</a>
+									</li>
+								</ul>
+
+								<div class="tab-content">
+									<div id="tab1" class="tab-pane fade in active">
+										<h3>Job Vacancy</h3>
+										<hr />
+										<form>
+											<div class="form-group has-feedback">
+												<label for="jvcode">Code:</label>
+												<br />
+												<span id="jvcode">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvtitle">Job Title:</label>
+												<br />
+												<span id="jvtitle">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvposition">Position:</label>
+												<br />
+												<span id="jvposition">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvdescription">Description:</label>
+												<br />
+												<span id="jvdescription">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvlocation">Location:</label>
+												<br />
+												<span id="jvlocation">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvdepartment">Department:</label>
+												<br />
+												<span id="jvdepartment">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvcategory">Category:</label>
+												<br />
+												<span id="jvcategory">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvvacancyStatus">Vacancy Status:</label>
+												<br />
+												<span id="jvvacancyStatus">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvaddedDate">Added Date:</label>
+												<br />
+												<span id="jvaddedDate">placeholder</span>
+											</div>
+										</form>
+									</div>
+									<div id="tab2" class="tab-pane fade">
+										<h3>Interview</h3>
+										<hr />
+										<form>
+											<div class="form-group has-feedback">
+												<label for="icode">Code: </label>
+												<br />
+												<span id="icode">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="idate">Date: </label>
+												<br />
+												<span id="idate">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="itime">Time: </label>
+												<br />
+												<span id="itime">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="ilocation">Location: </label>
+												<br />
+												<span id="ilocation">placeholder</span>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div style="margin-top: 5000px"></div>
+		</div>
+
+		<!-- libs -->
+		<script src="../../lib/moment/moment.min.js"></script>
+		<script src="../../lib/jquery/jquery.min.js"></script>
+		<script src="../../lib/bootstrap/js/bootstrap.min.js"></script>
+
+		<script src="../../lib/datatable/datatable.v2.js"></script>
+
+		<script src="../../lib/datetimepicker/jquery.datetimepicker.full.min.js"></script>
+
+		<!-- common stuff -->
+		<script src="../../js/Request.js"></script>
+		<script src="../../js/Form.js"></script>
+		<script src="../../js/FormUtil.js"></script>
+		<script src="../../js/MiscUtil.js"></script>
+
+		<!-- main js -->
+		<script src="candidate_interview.js"></script>
+	</body>
+</html>
