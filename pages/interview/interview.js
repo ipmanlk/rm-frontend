@@ -25,6 +25,10 @@ async function loadModule(permissionStr) {
 				Time: moment(entry.dateTime).format("hh:mm A"),
 				"Interview Status": entry.interviewStatus.name,
 				View: `<button class="btn btn-success btn-sm" onclick="showEditEntryModal('${entry.id}', true)"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> View</button>`,
+				Evaluate:
+					entry.interviewStatus.name == "Pending"
+						? `<button class="btn btn-primary btn-sm" onclick="showEditEntryModal('${entry.id}')"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> Evaluate</button>`
+						: "",
 			};
 		});
 	};
@@ -65,7 +69,7 @@ async function loadModule(permissionStr) {
 		const total =
 			((parseInt(candidateProfileScore) + parseInt(score)) / 110) * 100;
 
-		$("#efinalScore").text(Math.round(total));
+		$("#efinalScore").text(Math.round(total) + "%");
 	});
 
 	// catch promise rejections
@@ -130,11 +134,13 @@ const showEditEntryModal = async (id, readOnly = false) => {
 
 	$("#modalMainFormTitle").text("Interview");
 
-	// if (tempData.selectedEntry.applied) {
-	// 	$("#btnApply").attr("disabled", true);
-	// } else {
-	// 	$("#btnApply").attr("disabled", false);
-	// }
+	if (readOnly) {
+		$("#btnEvaluate").hide();
+		$("#eInterviewScore").attr("disabled", true);
+	} else {
+		$("#btnEvaluate").show();
+		$("#eInterviewScore").attr("disabled", false);
+	}
 
 	$("#modalMainForm").modal("show");
 };
@@ -142,8 +148,6 @@ const showEditEntryModal = async (id, readOnly = false) => {
 const loadEntry = (entry) => {
 	const jobVacancy = entry.jobApplication.jobVacancy;
 	const candidateProfile = entry.jobApplication.candidateProfile;
-
-	console.log(candidateProfile);
 
 	Object.keys(jobVacancy).forEach((k) => {
 		$(`#jv${k}`).text(jobVacancy[k]);
@@ -202,7 +206,15 @@ const loadEntry = (entry) => {
 		$(`${target} tbody`).append(row);
 	});
 
-	$("#ecandidateProfileReviewScore").text(candidateProfile.reviewScore);
+	$("#ecandidateProfileReviewScore").text(candidateProfile.reviewScore + "%");
+
+	$("#efinalScore").text(entry.finalScore + "%");
+	$("#eInterviewScore").val(entry.interviewScore);
+
+	FormUtil.selectDropdownOptionByValue(
+		"einterviewStatusId",
+		entry.interviewStatus.id
+	);
 };
 
 /*-------------------------------------------------------------------------------------------------------
