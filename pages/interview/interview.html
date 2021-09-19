@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css" />
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="../../lib/datatable/datatable.css"
+		/>
+		<link rel="stylesheet" type="text/css" href="../../css/pages/common.css" />
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="../../lib/datetimepicker/jquery.datetimepicker.min.css"
+		/>
+	</head>
+
+	<body>
+		<div class="container-fluid" style="margin-top: 20px; margin-bottom: 100px">
+			<div
+				id="mainTableHolder"
+				class="container-fluid"
+				style="margin-top: 30px"
+			></div>
+
+			<div class="modal fade" id="modalMainForm" role="dialog">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content" style="margin-bottom: 100px">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">
+								&times;
+							</button>
+							<h4 class="modal-title" id="modalMainFormTitle">Modal Header</h4>
+						</div>
+						<div class="modal-body">
+							<div class="forms">
+								<ul class="nav nav-tabs">
+									<li class="active">
+										<a data-toggle="tab" href="#tab1">Job Vacancy</a>
+									</li>
+									<li>
+										<a data-toggle="tab" href="#tab2">Candidate Profile</a>
+									</li>
+									<li>
+										<a data-toggle="tab" href="#tab3">Evaluate</a>
+									</li>
+								</ul>
+
+								<div class="tab-content">
+									<div id="tab1" class="tab-pane fade in active">
+										<h3>Job Vacancy</h3>
+										<hr />
+										<form>
+											<div class="form-group has-feedback">
+												<label for="jvcode">Code:</label>
+												<br />
+												<span id="jvcode">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvtitle">Job Title:</label>
+												<br />
+												<span id="jvtitle">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvposition">Position:</label>
+												<br />
+												<span id="jvposition">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvdescription">Description:</label>
+												<br />
+												<span id="jvdescription">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvlocation">Location:</label>
+												<br />
+												<span id="jvlocation">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvdepartment">Department:</label>
+												<br />
+												<span id="jvdepartment">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvcategory">Category:</label>
+												<br />
+												<span id="jvcategory">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvvacancyStatus">Vacancy Status:</label>
+												<br />
+												<span id="jvvacancyStatus">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="jvaddedDate">Added Date:</label>
+												<br />
+												<span id="jvaddedDate">placeholder</span>
+											</div>
+										</form>
+									</div>
+									<div id="tab2" class="tab-pane fade">
+										<h3>Candidate Profile</h3>
+										<hr />
+										<form>
+											<div class="form-group has-feedback image-upload">
+												<label for="cpphotoPreview">Photo: </label>
+												<img
+													class="photo-input"
+													id="cpphotoPreview"
+													src="../../img/avatar.png"
+												/>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="cpshortName">Name with initials: </label>
+												<br />
+												<span id="cpshortName">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="cpfullName">Full Name: </label>
+												<br />
+												<span id="cpfullName">placeholder</span>
+											</div>
+
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group has-feedback">
+														<label for="cpmobile">Mobile Number: </label>
+														<br />
+														<span id="cpmobile">placeholder</span>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group has-feedback">
+														<label for="cpland">Land Number: </label>
+														<br />
+														<span id="cpland">placeholder</span>
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="cpaddress">Address: </label>
+												<br />
+												<span id="cpaddress">placeholder</span>
+											</div>
+
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group has-feedback">
+														<label for="cpnic">NIC: </label>
+														<br />
+														<span id="cpnic">placeholder</span>
+													</div>
+												</div>
+
+												<div class="col-md-6">
+													<div class="form-group has-feedback">
+														<label for="cpnicProof">NIC Image / Proof: </label>
+														<br />
+														<div id="cpnicProof"></div>
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group sub-form">
+												<label>Education Qualifications: </label>
+												<div id="listEduQualifications"></div>
+											</div>
+
+											<div class="form-group sub-form">
+												<label>Professional Qualifications: </label>
+												<div id="listProQualifications"></div>
+											</div>
+
+											<div class="form-group sub-form">
+												<label>Experiences: </label>
+												<div id="listExperiences"></div>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="cpreviewScore">Review Score: </label>
+												<br />
+												<span id="cpreviewScore">placeholder</span>
+											</div>
+
+											<div class="form-group has-feedback">
+												<label for="candidateProfileReviewStatus"
+													>Review Status:
+												</label>
+												<br />
+												<span id="candidateProfileReviewStatus"
+													>placeholder</span
+												>
+											</div>
+										</form>
+									</div>
+									<div id="tab3" class="tab-pane fade">
+										<h3>Evaluate Candidate</h3>
+										<hr />
+										<form>
+											<div class="form-group has-feedback">
+												<label for="ecandidateProfileReviewScore"
+													>Candidate Profile Marks:
+												</label>
+												<br />
+												<span id="ecandidateProfileReviewScore"
+													>placeholder</span
+												>
+											</div>
+											<div class="form-group has-feedback">
+												<label for="eInterviewScore">Interview Score: </label>
+												<input
+													id="eInterviewScore"
+													class="form-control"
+													type="number"
+													placeholder="5"
+													min="0"
+													max="10"
+													value="0"
+												/>
+											</div>
+											<div class="form-group has-feedback">
+												<label for="efinalScore">Final Score: </label>
+												<br />
+												<span id="efinalScore"
+													>Please enter interview score</span
+												>
+											</div>
+											<div class="form-group has-feedback">
+												<label for="einterviewStatusId"
+													>Interview Status:</label
+												>
+												<select
+													name="einterviewStatusId"
+													id="einterviewStatusId"
+													class="form-control"
+												></select>
+											</div>
+										</form>
+										<div
+											style="
+												display: flex;
+												flex-direction: row;
+												justify-content: right;
+											"
+										>
+											<input
+												id="btnEvaluate"
+												type="button"
+												class="btn btn-success"
+												value="Evaluate"
+											/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div style="margin-top: 5000px"></div>
+		</div>
+
+		<!-- libs -->
+		<script src="../../lib/jquery/jquery.min.js"></script>
+		<script src="../../lib/bootstrap/js/bootstrap.min.js"></script>
+		<script src="../../lib/datatable/datatable.v2.js"></script>
+		<script src="../../lib/moment/moment.min.js"></script>
+		<script src="../../lib/datetimepicker/jquery.datetimepicker.full.min.js"></script>
+
+		<!-- common stuff -->
+		<script src="../../js/Request.js"></script>
+		<script src="../../js/Form.js"></script>
+		<script src="../../js/FormUtil.js"></script>
+		<script src="../../js/MiscUtil.js"></script>
+
+		<!-- main js -->
+		<script src="interview.js"></script>
+	</body>
+</html>

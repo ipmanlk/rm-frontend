@@ -39,6 +39,10 @@ const tileInfo = {
 		title: "My Interviews",
 		icon: "fa-user-circle",
 	},
+	INTERVIEW: {
+		title: "Interviews",
+		icon: "fa-user-circle",
+	},
 };
 
 $(document).ready(() => {
