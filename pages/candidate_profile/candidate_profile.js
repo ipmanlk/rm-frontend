@@ -426,12 +426,17 @@ const getQualifications = async () => {
 				qualificationTypeName: qualificationSelectors[selector],
 			};
 
-			const result = tempData.candidateProfile.candidateQualifications.find(
-				(p) => p.filename == filename
-			);
+			if (
+				tempData.candidateProfile &&
+				tempData.candidateProfile.candidateQualifications
+			) {
+				const result = tempData.candidateProfile.candidateQualifications.find(
+					(p) => p.filename == filename
+				);
 
-			if (result) {
-				qualification.id = result.id;
+				if (result) {
+					qualification.id = result.id;
+				}
 			}
 
 			qualifications.push(qualification);

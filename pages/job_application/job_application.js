@@ -44,12 +44,12 @@ async function loadModule(permissionStr) {
 		permission,
 		[],
 		[
-			{ id: "departmentId", route: "/api/departments" },
-			{ id: "jobCategoryId", route: "/api/job_categories" },
-			{
-				id: "jobVacancyStatusId",
-				route: "/api/general?data[table]=job_vacancy_status",
-			},
+			// { id: "departmentId", route: "/api/departments" },
+			// { id: "jobCategoryId", route: "/api/job_categories" },
+			// {
+			// 	id: "jobVacancyStatusId",
+			// 	route: "/api/general?data[table]=job_vacancy_status",
+			// },
 		],
 		{
 			addEntry: null,
@@ -108,6 +108,9 @@ const showEditEntryModal = async (id, readOnly = false) => {
 	tempData.selectedEntry = entry;
 
 	mainForm.loadEntry(entry);
+
+	$("#departmentName").val(entry.department.name);
+	$("#jobCategoryName").val(entry.jobCategory.name);
 
 	if (readOnly) {
 		mainForm.enableReadOnly();
