@@ -43,6 +43,10 @@ const tileInfo = {
 		title: "Interviews",
 		icon: "fa-user-circle",
 	},
+	TOP_CANDIDATES_REPORT: {
+		title: "Top Candidates Report",
+		icon: "fa-user-circle",
+	},
 };
 
 $(document).ready(() => {

@@ -130,6 +130,10 @@ const getRoutes = () => {
 			title: "Candidate Interview View",
 			path: "/pages/candidate_interview/candidate_interview.html",
 		},
+		top_candidates_report: {
+			title: "Top Candidates Report",
+			path: "/pages/top_candidates_report/top_candidates_report.html",
+		},
 		noauth: {
 			title: "Auth Failure",
 			path: "/pages/noauth.html",
