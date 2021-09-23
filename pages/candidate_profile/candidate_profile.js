@@ -13,6 +13,7 @@ async function loadModule(permissionStr) {
 	});
 
 	const validationInfo = response.data;
+	FormUtil.enableRealtimeValidation(validationInfo);
 
 	// create an array from permission string
 	const permission = permissionStr.split("").map((p) => parseInt(p));
