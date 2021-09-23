@@ -53,6 +53,7 @@ $(document).ready(() => {
 		// when keyword is empty
 		if (keyword.trim() == "") {
 			$(".TILE").show();
+			updateSpecialComponents();
 			return;
 		}
 
@@ -65,6 +66,8 @@ $(document).ready(() => {
 				$(tile).hide();
 			}
 		});
+
+		updateSpecialComponents();
 	});
 });
 
@@ -103,14 +106,21 @@ function updateTiles() {
 		}
 	});
 
-	updateSpecialComponents().catch((e) => {
-		console.log(e);
-	});
+	updateSpecialComponents();
 }
 
-const updateSpecialComponents = async () => {
-	// get the role name sof logged in user
-	const userRoles = mainWindow.tempData.profile.userRoles.map((ur) => ur.name);
+const updateSpecialComponents = () => {
+	// get the role names of logged in user
+	const profile = mainWindow.tempData.profile;
+	const userRoles = profile.userRoles.map((ur) => ur.name);
+
+	if (
+		(checkRoles(userRoles), "Candidate") &&
+		!profile.hasVerifiedCandidateProfile
+	) {
+		$(".JOB_APPLICATION").hide();
+		$(".CANDIDATE_INTERVIEW").hide();
+	}
 };
 
 // find if at least one of given array elements are included in an another array

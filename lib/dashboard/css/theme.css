@@ -76,7 +76,8 @@ body {
 .side-nav .heading > img {
 	border-radius: 50%;
 	float: left;
-	width: 28%;
+	width: 65px;
+	height: 65px;
 }
 .side-nav .info {
 	float: left;
