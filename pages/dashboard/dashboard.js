@@ -103,132 +103,14 @@ function updateTiles() {
 		}
 	});
 
-	// update right sidebar and calenders
-	updateSideBar().catch((e) => {
+	updateSpecialComponents().catch((e) => {
 		console.log(e);
 	});
 }
 
-const updateSideBar = async () => {
+const updateSpecialComponents = async () => {
 	// get the role name sof logged in user
 	const userRoles = mainWindow.tempData.profile.userRoles.map((ur) => ur.name);
-
-	const response = await (await fetch("/api/summery/dashboard")).json();
-
-	const {
-		lowMaterials,
-		lowProductPackages,
-		cheques,
-		customerOrders,
-		productionOrders,
-	} = response.data;
-
-	// show list box stuff
-	if (
-		lowMaterials.length != 0 &&
-		checkRoles(userRoles, [
-			"Admin",
-			"Owner",
-			"Factory Manager",
-			"Factory Supervisor",
-			"Assistant Factory Manager",
-		])
-	) {
-		$("#cardLowMaterialsList").empty();
-		lowMaterials.forEach((m) => {
-			$("#cardLowMaterialsList").append(`
-				<a href="/?page=material_inventory" target="_blank" class="list-group-item">
-					${m.material.name} (${m.material.code})
-				</a>
-			`);
-		});
-	} else {
-		$("#cardLowMaterials").hide();
-	}
-
-	if (
-		lowProductPackages.length != 0 &&
-		checkRoles(userRoles, ["Admin", "Owner", "Shop Manager"])
-	) {
-		$("#cardLowProductPackagesList").empty();
-		lowProductPackages.forEach((i) => {
-			$("#cardLowProductPackagesList").append(`
-				<a href="/?page=production_inventory" target="_blank" class="list-group-item">
-					${i.productPackage.name} (${i.productPackage.code})
-				</a>
-			`);
-		});
-	} else {
-		$("#cardLowProductPackages").hide();
-	}
-
-	// show calender stuff
-	const calenderEvents = [];
-
-	if (
-		checkRoles(userRoles, [
-			"Admin",
-			"Owner",
-			"Shop Manager",
-			"Assistant Shop Manager",
-		])
-	) {
-		cheques.forEach((i) => {
-			calenderEvents.push({
-				date: new Date(i.chequeDate).getTime().toString(),
-				type: "deposit",
-				title: `Cheque Deposit: No-${i.chequeNo} (From Invoice: ${i.code})`,
-				description: "You have to deposit this cheque on this day.",
-				url: `/?page=customer_invoice&show=${i.id}`,
-			});
-		});
-	}
-
-	if (
-		checkRoles(userRoles, [
-			"Admin",
-			"Owner",
-			"Shop Manager",
-			"Assistant Shop Manager",
-			"Cashier",
-		])
-	) {
-		customerOrders.forEach((i) => {
-			calenderEvents.push({
-				date: new Date(i.requiredDate).getTime().toString(),
-				type: "order",
-				title: `Customer Order: ${i.cocode} (From: ${i.customer.customerName}-${i.customer.number})`,
-				description: "You have to deliver this order on this day.",
-				url: `http://localhost:3000/?page=customer_order&show=${i.id}`,
-			});
-		});
-	}
-
-	if (
-		checkRoles(userRoles, [
-			"Admin",
-			"Owner",
-			"Factory Manager",
-			"Factory Supervisor",
-		])
-	) {
-		productionOrders.forEach((i) => {
-			calenderEvents.push({
-				date: new Date(i.requiredDate).getTime().toString(),
-				type: "order",
-				title: `Production Order: ${i.code} (From: ${i.employee.callingName}-${i.employee.number})`,
-				description: "You have to deliver this order on this day.",
-				url: `http://localhost:3000/?page=production_order_confirm&show=${i.id}`,
-			});
-		});
-	}
-
-	$("#eventCalendar").eventCalendar({
-		jsonData: calenderEvents,
-		dateFormat: "dddd MM-D-YYYY",
-		eventsLimit: 5,
-		openEventInNewWindow: true,
-	});
 };
 
 // find if at least one of given array elements are included in an another array
