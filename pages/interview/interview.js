@@ -221,7 +221,8 @@ const loadEntry = (entry) => {
                                             Operations
 -------------------------------------------------------------------------------------------------------*/
 const evaluateCandidate = async () => {
-	const finalScore = $("#efinalScore").text();
+	let finalScore = $("#efinalScore").text();
+	finalScore = finalScore.slice(0, -1);
 	const interviewStatusId = $("#einterviewStatusId").val();
 
 	if (isNaN(finalScore)) {
