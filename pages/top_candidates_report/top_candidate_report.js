@@ -61,4 +61,59 @@ const showReport = async () => {
   `;
 
 	$("#output").html(table);
+
+	// generate chart
+	showCharts(response.data);
+};
+
+const showCharts = (data) => {
+	/* 
+  Show Sales Chart 
+  */
+	// get canvas for displaying chart
+	const ctx = document.getElementById("barChart");
+
+	if (window.barChartObj) window.barChartObj.destroy();
+	$("#barChart").empty();
+
+	const barChartOptions = {
+		type: "bar",
+		data: {
+			labels: data.map((i) => i.code),
+			datasets: [
+				{
+					label: "Candidates",
+					data: data.map((i) => i.reviewScore),
+					backgroundColor: "rgb(54, 162, 235, 0.6)",
+					borderWidth: 1,
+				},
+			],
+		},
+		options: {
+			scales: {
+				yAxes: [
+					{
+						ticks: {
+							beginAtZero: true,
+						},
+						scaleLabel: {
+							display: true,
+							labelString: "Review Score",
+						},
+					},
+				],
+				xAxes: [
+					{
+						scaleLabel: {
+							display: true,
+							labelString: "Candidate",
+						},
+					},
+				],
+			},
+		},
+	};
+
+	// create chart object
+	window.barChartObj = new Chart(ctx, barChartOptions);
 };

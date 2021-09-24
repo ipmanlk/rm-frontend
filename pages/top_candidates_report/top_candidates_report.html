@@ -8,15 +8,6 @@
 		<link rel="stylesheet" type="text/css" href="../../css/pages/common.css" />
 
 		<style>
-			.tab-pane {
-				padding-bottom: 400px;
-			}
-
-			.tab-pane div:first-child,
-			table:first-child {
-				margin-top: 30px;
-			}
-
 			.chart-container {
 				position: relative;
 				height: 40vh;
@@ -51,11 +42,36 @@
 				</div>
 				<div class="col-xs-4"></div>
 			</div>
+			<div class="row" style="margin-top: 30px">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a data-toggle="tab" href="#tableView">Tabular View</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#barChartView">Chart View</a>
+					</li>
+				</ul>
+
+				<div class="tab-content">
+					<div id="tableView" class="tab-pane fade in active">
+						<div
+							id="outputContainer"
+							class="container"
+							style="margin-top: 20px"
+						>
+							<div id="output"></div>
+						</div>
+					</div>
+
+					<div id="barChartView" class="tab-pane fade">
+						<div class="chart-container">
+							<canvas id="barChart"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
-		<div id="outputContainer" class="container" style="margin-top: 20px">
-			<div id="output"></div>
-		</div>
 		<!-- libs -->
 		<script src="../../lib/jquery/jquery.min.js"></script>
 		<script src="../../lib/bootstrap/js/bootstrap.min.js"></script>
